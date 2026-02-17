@@ -1,0 +1,55 @@
+.root {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.quote {
+  border-left: 4px solid #c7b59a;
+  padding: 0.75rem 1rem;
+  background: rgba(199, 181, 154, 0.08);
+}
+
+.quoteTitle {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.quoteBody {
+  margin: 0;
+}
+
+.media {
+  margin: 0;
+}
+
+.mediaImg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.richText {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.richText p {
+  margin: 0;
+}
+
+.richText ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.richText h2 {
+  margin: 1rem 0 0.25rem;
+  font-size: 1.4rem;
+}
+
+.richText h3 {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 1.15rem;
+}
+

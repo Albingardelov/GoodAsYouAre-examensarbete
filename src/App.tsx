@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Layout } from './components/Layout/Layout';
+import { Page } from './pages/Page/Page';
+
+const ROUTES: Array<{ path: string; slug: string; title: string }> = [
+  { path: '/', slug: 'home', title: 'Hem' },
+  { path: '/om-mig', slug: 'about', title: 'Om mig' },
+  { path: '/vad-ar-act', slug: 'act', title: 'Vad är ACT' },
+  { path: '/toxism-vs-narcissism', slug: 'toxism-vs-narcissism', title: 'Toxism vs Narcissism' },
+  { path: '/tjanster', slug: 'services', title: 'Tjänster' },
+  { path: '/kontakt', slug: 'contact', title: 'Kontakt' },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route element={<Layout />}>
+        {ROUTES.map((r) => (
+          <Route key={r.path} path={r.path} element={<Page slug={r.slug} titleFallback={r.title} />} />
+        ))}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
