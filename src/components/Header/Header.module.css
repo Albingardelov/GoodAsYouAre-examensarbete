@@ -29,6 +29,29 @@
   align-items: center;
 }
 
+.spacer {
+  flex: 1;
+}
+
+.langButton {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  padding: 0.35rem 0.55rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.langButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.langButton:focus-visible {
+  outline: 3px solid rgba(199, 181, 154, 0.65);
+  outline-offset: 2px;
+}
+
 .link {
   padding: 0.35rem 0.5rem;
   border-radius: 8px;

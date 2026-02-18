@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { PageRenderer } from '../../components/PageRenderer/PageRenderer';
 import { usePage } from '../../hooks/usePage';
+import { useLocale } from '../../hooks/useLocale';
 import styles from './Page.module.css';
 
 export function Page(props: { slug: string; titleFallback: string }) {
-  const page = usePage({ slug: props.slug, locale: 'sv' });
+  const { locale } = useLocale();
+  const page = usePage({ slug: props.slug, locale });
 
   useEffect(() => {
     if (page.status !== 'success') return;
@@ -18,7 +20,7 @@ export function Page(props: { slug: string; titleFallback: string }) {
 
       {page.status === 'loading' ? (
         <p className={styles.status} aria-live="polite">
-          Hämtar innehåll…
+          {locale === 'sv' ? 'Hämtar innehåll…' : 'Loading content…'}
         </p>
       ) : null}
 
@@ -28,11 +30,15 @@ export function Page(props: { slug: string; titleFallback: string }) {
         </p>
       ) : null}
 
-      {page.status === 'not_found' ? <p role="status">Hittade ingen sida med denna slug.</p> : null}
+      {page.status === 'not_found' ? (
+        <p role="status">{locale === 'sv' ? 'Hittade ingen sida med denna slug.' : 'No page found for this slug.'}</p>
+      ) : null}
 
       {page.status === 'success' && page.data.blocks?.length ? <PageRenderer blocks={page.data.blocks} /> : null}
 
-      {page.status === 'success' && !page.data.blocks?.length ? <p role="status">Sidan saknar blocks.</p> : null}
+      {page.status === 'success' && !page.data.blocks?.length ? (
+        <p role="status">{locale === 'sv' ? 'Sidan saknar blocks.' : 'Page has no blocks.'}</p>
+      ) : null}
     </>
   );
 }

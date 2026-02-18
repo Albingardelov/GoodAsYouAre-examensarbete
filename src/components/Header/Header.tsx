@@ -1,20 +1,22 @@
 import { NavLink } from 'react-router-dom';
+import { useLocale } from '../../hooks/useLocale';
 import styles from './Header.module.css';
 
-const NAV_ITEMS: Array<{ to: string; label: string }> = [
-  { to: '/', label: 'Hem' },
-  { to: '/om-mig', label: 'Om mig' },
-  { to: '/vad-ar-act', label: 'Vad är ACT' },
-  { to: '/toxism-vs-narcissism', label: 'Toxism vs Narcissism' },
-  { to: '/tjanster', label: 'Tjänster' },
-  { to: '/kontakt', label: 'Kontakt' },
+const NAV_ITEMS: Array<{ to: string; label: { sv: string; en: string } }> = [
+  { to: '/', label: { sv: 'Hem', en: 'Home' } },
+  { to: '/om-mig', label: { sv: 'Om mig', en: 'About' } },
+  { to: '/vad-ar-act', label: { sv: 'Vad är ACT', en: 'What is ACT' } },
+  { to: '/toxism-vs-narcissism', label: { sv: 'Toxism vs Narcissism', en: 'Toxism vs Narcissism' } },
+  { to: '/tjanster', label: { sv: 'Tjänster', en: 'Services' } },
+  { to: '/kontakt', label: { sv: 'Kontakt', en: 'Contact' } },
 ];
 
 export function Header() {
+  const { locale, toggleLocale } = useLocale();
   return (
     <header className={styles.header}>
       <a className={styles.skipLink} href="#main">
-        Hoppa till innehåll
+        {locale === 'sv' ? 'Hoppa till innehåll' : 'Skip to content'}
       </a>
 
       <div className={styles.inner}>
@@ -30,9 +32,20 @@ export function Header() {
               className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
               end={item.to === '/'}
             >
-              {item.label}
+              {item.label[locale]}
             </NavLink>
           ))}
+
+          <span className={styles.spacer} />
+
+          <button
+            type="button"
+            className={styles.langButton}
+            onClick={toggleLocale}
+            aria-label={locale === 'sv' ? 'Byt språk till engelska' : 'Switch language to Swedish'}
+          >
+            {locale === 'sv' ? 'EN' : 'SV'}
+          </button>
         </nav>
       </div>
     </header>
