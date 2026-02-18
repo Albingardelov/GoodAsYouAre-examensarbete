@@ -11,7 +11,9 @@ export function PageRenderer(props: { blocks: PageBlock[] }) {
           const b = block as SharedRichTextBlock;
           return (
             <section key={block.id} className={styles.richText}>
-              <ReactMarkdown>{typeof b.body === 'string' ? b.body : ''}</ReactMarkdown>
+              <ReactMarkdown components={{ h1: ({ children }) => <h2>{children}</h2> }}>
+                {typeof b.body === 'string' ? b.body : ''}
+              </ReactMarkdown>
             </section>
           );
         }
