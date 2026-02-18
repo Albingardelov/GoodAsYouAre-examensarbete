@@ -64,6 +64,12 @@
   opacity: 1;
 }
 
+.link:focus-visible {
+  outline: 3px solid rgba(199, 181, 154, 0.65);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
 .active {
   background: rgba(199, 181, 154, 0.14);
   outline: 1px solid rgba(199, 181, 154, 0.35);

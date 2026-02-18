@@ -1,6 +1,6 @@
+import ReactMarkdown from 'react-markdown';
 import type { PageBlock, SharedMediaBlock, SharedQuoteBlock, SharedRichTextBlock } from '../../types/strapi';
 import { toAbsoluteStrapiUrl } from '../../api/strapi';
-import { richTextToElements } from './richTextToElements';
 import styles from './PageRenderer.module.css';
 
 export function PageRenderer(props: { blocks: PageBlock[] }) {
@@ -11,7 +11,7 @@ export function PageRenderer(props: { blocks: PageBlock[] }) {
           const b = block as SharedRichTextBlock;
           return (
             <section key={block.id} className={styles.richText}>
-              {richTextToElements(typeof b.body === 'string' ? b.body : '')}
+              <ReactMarkdown>{typeof b.body === 'string' ? b.body : ''}</ReactMarkdown>
             </section>
           );
         }
