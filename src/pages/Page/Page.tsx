@@ -16,7 +16,9 @@ export function Page(props: { slug: string; titleFallback: string }) {
 
   return (
     <>
-      <h1 className={styles.title}>{props.titleFallback}</h1>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.title}>{props.titleFallback}</h1>
+      </div>
 
       {page.status === 'loading' ? (
         <p className={styles.status} aria-live="polite">

@@ -1,7 +1,22 @@
 import ReactMarkdown from 'react-markdown';
-import type { PageBlock, SharedMediaBlock, SharedQuoteBlock, SharedRichTextBlock } from '../../types/strapi';
+import type { PageBlock, SectionTheme, SharedMediaBlock, SharedQuoteBlock, SharedRichTextBlock } from '../../types/strapi';
 import { toAbsoluteStrapiUrl } from '../../api/strapi';
 import styles from './PageRenderer.module.css';
+
+const themeClass: Record<SectionTheme, string> = {
+  default: styles.sectionDefault,
+  tinted: styles.sectionTinted,
+  accent: styles.sectionAccent,
+};
+
+function Section({ theme, children }: { theme?: SectionTheme | null; children: React.ReactNode }) {
+  const cls = [styles.section, themeClass[theme ?? 'default']].join(' ');
+  return (
+    <div className={cls}>
+      <div className={styles.sectionInner}>{children}</div>
+    </div>
+  );
+}
 
 export function PageRenderer(props: { blocks: PageBlock[] }) {
   return (
@@ -10,11 +25,13 @@ export function PageRenderer(props: { blocks: PageBlock[] }) {
         if (block.__component === 'shared.rich-text') {
           const b = block as SharedRichTextBlock;
           return (
-            <section key={block.id} className={styles.richText}>
-              <ReactMarkdown components={{ h1: ({ children }) => <h2>{children}</h2> }}>
-                {typeof b.body === 'string' ? b.body : ''}
-              </ReactMarkdown>
-            </section>
+            <Section key={block.id} theme={b.theme}>
+              <div className={styles.richText}>
+                <ReactMarkdown components={{ h1: ({ children }) => <h2>{children}</h2> }}>
+                  {typeof b.body === 'string' ? b.body : ''}
+                </ReactMarkdown>
+              </div>
+            </Section>
           );
         }
 
@@ -23,16 +40,18 @@ export function PageRenderer(props: { blocks: PageBlock[] }) {
           const title = typeof b.title === 'string' ? b.title : null;
           const body = typeof b.body === 'string' ? b.body : null;
           return (
-            <section key={block.id} className={styles.quote} aria-label={title ?? 'Citat'}>
-              {title ? <p className={styles.quoteTitle}>{title}</p> : null}
-              {body ? <p className={styles.quoteBody}>{body}</p> : null}
-            </section>
+            <Section key={block.id} theme={b.theme}>
+              <blockquote className={styles.quote} aria-label={title ?? 'Citat'}>
+                {title ? <p className={styles.quoteTitle}>{title}</p> : null}
+                {body ? <p className={styles.quoteBody}>{body}</p> : null}
+              </blockquote>
+            </Section>
           );
         }
 
         if (block.__component === 'shared.media') {
           const b = block as SharedMediaBlock;
-          const media = b.file?.data ?? null;
+          const media = b.file ?? null;
           if (!media) return null;
 
           const src = toAbsoluteStrapiUrl(typeof media.url === 'string' ? media.url : '');
@@ -43,24 +62,24 @@ export function PageRenderer(props: { blocks: PageBlock[] }) {
 
           if (media.mime?.startsWith('image/')) {
             return (
-              <figure key={block.id} className={styles.media}>
-                <img className={styles.mediaImg} src={src} alt={alt} loading="lazy" />
-                {media.caption ? <figcaption>{media.caption}</figcaption> : null}
-              </figure>
+              <Section key={block.id}>
+                <figure className={styles.media}>
+                  <img className={styles.mediaImg} src={src} alt={alt} loading="lazy" />
+                  {media.caption ? <figcaption>{media.caption}</figcaption> : null}
+                </figure>
+              </Section>
             );
           }
 
           return (
-            <p key={block.id}>
-              <a href={src}>Ladda ner fil</a>
-            </p>
+            <Section key={block.id}>
+              <p><a href={src}>Ladda ner fil</a></p>
+            </Section>
           );
         }
 
-        // Unhandled block type for now
         return null;
       })}
     </div>
   );
 }
-

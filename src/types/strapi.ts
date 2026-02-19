@@ -34,10 +34,13 @@ export type StrapiMediaAttributes = {
 
 export type StrapiMedia = StrapiEntity<StrapiMediaAttributes>;
 
+export type SectionTheme = 'default' | 'tinted' | 'accent';
+
 export type SharedRichTextBlock = {
   __component: 'shared.rich-text';
   id: number;
   body: string;
+  theme?: SectionTheme | null;
 };
 
 export type SharedQuoteBlock = {
@@ -45,12 +48,13 @@ export type SharedQuoteBlock = {
   id: number;
   title?: string | null;
   body?: string | null;
+  theme?: SectionTheme | null;
 };
 
 export type SharedMediaBlock = {
   __component: 'shared.media';
   id: number;
-  file?: { data: StrapiMedia | null } | null;
+  file?: StrapiMedia | null;
 };
 
 export type SharedSliderBlock = {

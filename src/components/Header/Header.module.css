@@ -1,15 +1,14 @@
-/* v2 */
 .header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(15, 15, 16, 0.96);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-header-bg);
+  color: var(--color-header-text);
+  border-bottom: 1px solid var(--color-header-border);
 }
 
 .inner {
-  max-width: 70ch;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0.875rem 1.25rem;
   display: flex;
@@ -40,7 +39,7 @@
 }
 
 .menuButton:focus-visible {
-  outline: 3px solid rgba(199, 181, 154, 0.65);
+  outline: 3px solid var(--color-accent-focus);
   outline-offset: 2px;
 }
 
@@ -79,7 +78,8 @@
   flex-direction: column;
   padding: 6rem 2rem 3rem;
   gap: 0.25rem;
-  background: #0f0f10;
+  background: var(--color-header-bg);
+  color: var(--color-header-text);
   visibility: hidden;
   opacity: 0;
   transform: translateX(100%);
@@ -111,17 +111,18 @@
   border-radius: 8px;
   text-decoration: none;
   font-size: 0.9rem;
+  white-space: nowrap;
   opacity: 0.92;
   transition: background 0.15s, opacity 0.15s;
 }
 
 .link:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.05);
   opacity: 1;
 }
 
 .link:focus-visible {
-  outline: 3px solid rgba(199, 181, 154, 0.65);
+  outline: 3px solid var(--color-accent-focus);
   outline-offset: 2px;
   opacity: 1;
 }
@@ -137,27 +138,47 @@
 }
 
 .mobileLink:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.05);
   opacity: 1;
 }
 
 .mobileLink:focus-visible {
-  outline: 3px solid rgba(199, 181, 154, 0.65);
+  outline: 3px solid var(--color-accent-focus);
   outline-offset: 2px;
   opacity: 1;
 }
 
 .active {
-  background: rgba(199, 181, 154, 0.14);
-  outline: 1px solid rgba(199, 181, 154, 0.35);
+  background: rgba(0, 0, 0, 0.07);
   opacity: 1;
+}
+
+/* ── CTA-länk (Kontakt) ──────────────────────────────────── */
+
+.ctaLink {
+  background: var(--color-cta-bg);
+  color: var(--color-cta-text) !important;
+  border-radius: 20px;
+  padding: 0.45rem 1.1rem;
+  opacity: 1;
+}
+
+.ctaLink:hover {
+  background: var(--color-cta-bg);
+  filter: brightness(0.95);
+}
+
+.ctaLink.active {
+  background: var(--color-cta-bg);
+  outline: none;
+  filter: brightness(0.9);
 }
 
 /* ── Language button ─────────────────────────────────────── */
 
 .langButton {
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--color-surface);
   color: inherit;
   padding: 0.45rem 0.75rem;
   border-radius: 10px;
@@ -171,7 +192,7 @@
 }
 
 .langButton:focus-visible {
-  outline: 3px solid rgba(199, 181, 154, 0.65);
+  outline: 3px solid var(--color-accent-focus);
   outline-offset: 2px;
 }
 
@@ -182,7 +203,7 @@
   left: -999px;
   top: 0.5rem;
   background: #ffffff;
-  color: #0f0f10;
+  color: var(--color-bg);
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   text-decoration: none;
@@ -209,11 +230,6 @@
     flex-direction: row;
     align-items: center;
     gap: 0.25rem;
-    flex: 1;
-    margin-left: 1.5rem;
-  }
-
-  .spacer {
-    flex: 1;
+    margin-left: auto;
   }
 }

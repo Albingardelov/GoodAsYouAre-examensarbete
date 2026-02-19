@@ -3,13 +3,13 @@ import { NavLink } from 'react-router-dom';
 import { useLocale } from '../../hooks/useLocale';
 import styles from './Header.module.css';
 
-const NAV_ITEMS: Array<{ to: string; label: { sv: string; en: string } }> = [
+const NAV_ITEMS: Array<{ to: string; label: { sv: string; en: string }; cta?: boolean }> = [
   { to: '/', label: { sv: 'Hem', en: 'Home' } },
   { to: '/om-mig', label: { sv: 'Om mig', en: 'About' } },
   { to: '/vad-ar-act', label: { sv: 'Vad är ACT', en: 'What is ACT' } },
   { to: '/toxism-vs-narcissism', label: { sv: 'Toxism vs Narcissism', en: 'Toxism vs Narcissism' } },
   { to: '/tjanster', label: { sv: 'Tjänster', en: 'Services' } },
-  { to: '/kontakt', label: { sv: 'Kontakt', en: 'Contact' } },
+  { to: '/kontakt', label: { sv: 'Kontakt', en: 'Contact' }, cta: true },
 ];
 
 export function Header() {
@@ -89,13 +89,14 @@ export function Header() {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
+                className={({ isActive }) =>
+                  [styles.link, isActive ? styles.active : '', item.cta ? styles.ctaLink : ''].filter(Boolean).join(' ')
+                }
                 end={item.to === '/'}
               >
                 {item.label[locale]}
               </NavLink>
             ))}
-            <span className={styles.spacer} />
             {langBtn}
           </nav>
 
@@ -131,7 +132,9 @@ export function Header() {
             <NavLink
               key={item.to}
               to={item.to}
-              className={({ isActive }) => `${styles.mobileLink} ${isActive ? styles.active : ''}`}
+              className={({ isActive }) =>
+                [styles.mobileLink, isActive ? styles.active : '', item.cta ? styles.ctaLink : ''].filter(Boolean).join(' ')
+              }
               end={item.to === '/'}
               onClick={closeMenu}
               tabIndex={isOpen ? 0 : -1}

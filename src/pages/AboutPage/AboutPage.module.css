@@ -1,0 +1,104 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Hero section ───────────────────────────────────── */
+
+.heroSection {
+  width: 100%;
+  padding: 5rem 1.5rem;
+  background: var(--color-section-tinted);
+}
+
+.heroInner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.heroText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.name {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.heroBody {
+  display: grid;
+  gap: 0.6rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.heroBody p {
+  margin: 0;
+}
+
+.heroBody ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.heroPhoto {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 3px solid var(--color-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.09);
+  display: block;
+}
+
+.avatarPlaceholder {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+}
+
+/* Mobile: stapla vertikalt, bild ovanför */
+@media (max-width: 600px) {
+  .heroInner {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .heroBody ul {
+    text-align: left;
+  }
+}
+
+/* ── States ─────────────────────────────────────────── */
+
+.status {
+  padding: 2rem 1.5rem;
+  opacity: 0.7;
+}
+
+.error {
+  margin: 1rem 1.5rem;
+  color: #b91c1c;
+  background: rgba(185, 28, 28, 0.07);
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}

@@ -20,9 +20,11 @@ export async function fetchPageBySlug(params: {
 }): Promise<StrapiEntity<PageAttributes> | null> {
   const baseUrl = assertStrapiUrl();
   const qs = new URLSearchParams();
-  // Strapi v5 does not support populate=deep. Use populate=* (1-level) for now.
-  // If we later need deeper population, we’ll explicitly enumerate paths.
-  qs.set('populate', '*');
+  // Populate blocks and all relations within each block (e.g. file in shared.media).
+  // Populate seo shallowly (only scalar fields needed for page title).
+  qs.set('populate[blocks][populate]', '*');
+  qs.set('populate[seo][fields][0]', 'metaTitle');
+  qs.set('populate[seo][fields][1]', 'metaDescription');
   qs.set('filters[slug][$eq]', params.slug);
   if (params.locale) qs.set('locale', params.locale);
 

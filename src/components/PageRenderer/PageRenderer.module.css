@@ -1,12 +1,40 @@
 .root {
-  display: grid;
-  gap: 1.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ── Section wrapper (full-width) ───────────────────────── */
+
+.section {
+  width: 100%;
+  padding: 4.5rem 1.5rem;
+}
+
+.sectionInner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.sectionDefault {
+  background: var(--color-section-default);
+}
+
+.sectionTinted {
+  background: var(--color-section-tinted);
+}
+
+.sectionAccent {
+  background: var(--color-section-accent);
+}
+
+/* ── Quote ───────────────────────────────────────────────── */
+
 .quote {
-  border-left: 4px solid #c7b59a;
-  padding: 0.75rem 1rem;
-  background: rgba(199, 181, 154, 0.08);
+  margin: 0;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  background: var(--gradient-quote);
+  color: #1a1a1a;
 }
 
 .quoteTitle {
@@ -19,15 +47,48 @@
   margin: 0;
 }
 
+/* ── Media ───────────────────────────────────────────────── */
+
 .media {
-  margin: 0;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  max-width: 480px;
 }
 
 .mediaImg {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   display: block;
 }
+
+.media figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.85rem;
+  opacity: 0;
+  translate: 0 100%;
+  transition: opacity 0.2s ease, translate 0.2s ease;
+}
+
+.media:hover figcaption {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media figcaption {
+    transition: none;
+  }
+}
+
+/* ── Rich text ───────────────────────────────────────────── */
 
 .richText {
   display: grid;
@@ -52,4 +113,3 @@
   margin: 0.75rem 0 0.25rem;
   font-size: 1.15rem;
 }
-
