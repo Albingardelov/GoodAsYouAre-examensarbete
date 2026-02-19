@@ -64,7 +64,14 @@ export function PageRenderer(props: { blocks: PageBlock[] }) {
             return (
               <Section key={block.id}>
                 <figure className={styles.media}>
-                  <img className={styles.mediaImg} src={src} alt={alt} loading="lazy" />
+                  <img
+                    className={styles.mediaImg}
+                    src={src}
+                    alt={alt}
+                    loading="lazy"
+                    width={media.width ?? undefined}
+                    height={media.height ?? undefined}
+                  />
                   {media.caption ? <figcaption>{media.caption}</figcaption> : null}
                 </figure>
               </Section>

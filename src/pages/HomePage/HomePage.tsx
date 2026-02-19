@@ -78,6 +78,9 @@ export function HomePage() {
                 src={imageSrc}
                 alt={imageAlt}
                 loading="eager"
+                fetchPriority="high"
+                width={heroMedia?.width ?? undefined}
+                height={heroMedia?.height ?? undefined}
               />
             </div>
           )}
