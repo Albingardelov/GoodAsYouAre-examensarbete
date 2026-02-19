@@ -36,7 +36,12 @@ export function Page(props: { slug: string; titleFallback: string }) {
         <p role="status">{locale === 'sv' ? 'Hittade ingen sida med denna slug.' : 'No page found for this slug.'}</p>
       ) : null}
 
-      {page.status === 'success' && page.data.blocks?.length ? <PageRenderer blocks={page.data.blocks} /> : null}
+      {page.status === 'success' && page.data.blocks?.length ? (
+        <PageRenderer
+          blocks={page.data.blocks}
+          accordion={props.slug === 'toxism-vs-narcissism'}
+        />
+      ) : null}
 
       {page.status === 'success' && !page.data.blocks?.length ? (
         <p role="status">{locale === 'sv' ? 'Sidan saknar blocks.' : 'Page has no blocks.'}</p>

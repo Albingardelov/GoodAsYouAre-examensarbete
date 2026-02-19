@@ -18,17 +18,106 @@ function Section({ theme, children }: { theme?: SectionTheme | null; children: R
   );
 }
 
-export function PageRenderer(props: { blocks: PageBlock[] }) {
+function AccordionRichText({ body, media }: { body: string; media?: SharedMediaBlock | null }) {
+  const headingMatch = body.match(/^#{1,3}\s+(.+)$/m);
+  const title = headingMatch ? headingMatch[1] : null;
+  const bodyWithoutHeading = headingMatch ? body.replace(headingMatch[0], '').trim() : body;
+
+  const mediaFile = media?.file ?? null;
+  const imageSrc =
+    mediaFile && typeof mediaFile.url === 'string'
+      ? toAbsoluteStrapiUrl(mediaFile.url)
+      : null;
+  const imageAlt =
+    (typeof mediaFile?.alternativeText === 'string' && mediaFile.alternativeText) ||
+    (typeof mediaFile?.caption === 'string' && mediaFile.caption) ||
+    '';
+
+  if (!title) {
+    return (
+      <div className={styles.richText}>
+        <ReactMarkdown>{body}</ReactMarkdown>
+      </div>
+    );
+  }
+
+  return (
+    <details className={styles.accordion}>
+      <summary className={styles.accordionSummary}>{title}</summary>
+      <div className={styles.accordionBody}>
+        {imageSrc && mediaFile?.mime?.startsWith('image/') && (
+          <figure className={styles.accordionImage}>
+            <img
+              src={imageSrc}
+              alt={imageAlt}
+              loading="lazy"
+              width={mediaFile.width ?? undefined}
+              height={mediaFile.height ?? undefined}
+            />
+          </figure>
+        )}
+        <div className={styles.richText}>
+          <ReactMarkdown>{bodyWithoutHeading}</ReactMarkdown>
+        </div>
+      </div>
+    </details>
+  );
+}
+
+type AccordionGroup = {
+  richText: SharedRichTextBlock;
+  media?: SharedMediaBlock;
+};
+
+function groupAccordionBlocks(blocks: PageBlock[]): AccordionGroup[] {
+  const groups: AccordionGroup[] = [];
+  let i = 0;
+  while (i < blocks.length) {
+    const block = blocks[i];
+    if (block.__component === 'shared.rich-text') {
+      const next = blocks[i + 1];
+      if (next && next.__component === 'shared.media') {
+        groups.push({ richText: block as SharedRichTextBlock, media: next as SharedMediaBlock });
+        i += 2;
+      } else {
+        groups.push({ richText: block as SharedRichTextBlock });
+        i += 1;
+      }
+    } else {
+      i += 1;
+    }
+  }
+  return groups;
+}
+
+export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean }) {
+  if (props.accordion) {
+    const groups = groupAccordionBlocks(props.blocks);
+    return (
+      <div className={styles.root}>
+        {groups.map(({ richText, media }) => (
+          <div key={richText.id} className={styles.accordionWrapper}>
+            <AccordionRichText
+              body={typeof richText.body === 'string' ? richText.body : ''}
+              media={media}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className={styles.root}>
       {props.blocks.map((block) => {
         if (block.__component === 'shared.rich-text') {
           const b = block as SharedRichTextBlock;
+          const body = typeof b.body === 'string' ? b.body : '';
           return (
             <Section key={block.id} theme={b.theme}>
               <div className={styles.richText}>
                 <ReactMarkdown components={{ h1: ({ children }) => <h2>{children}</h2> }}>
-                  {typeof b.body === 'string' ? b.body : ''}
+                  {body}
                 </ReactMarkdown>
               </div>
             </Section>
