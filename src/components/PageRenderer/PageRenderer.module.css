@@ -188,6 +188,168 @@
   }
 }
 
+/* ── Text sections (fullscreen per block) ────────────────── */
+
+.textSectionsRoot {
+  display: flex;
+  flex-direction: column;
+}
+
+.textSection {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg);
+}
+
+.textSectionTinted {
+  background: var(--color-section-tinted);
+}
+
+.textSectionInner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
+  width: 100%;
+}
+
+.textSectionInner .richText h1,
+.textSectionInner .richText h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+}
+
+.textSectionInner .richText p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  opacity: 0.8;
+  margin: 0 0 1rem;
+}
+
+.textSectionInner .richText ul {
+  line-height: 1.8;
+  padding-left: 1.25rem;
+  opacity: 0.8;
+}
+
+/* ── Split layout ────────────────────────────────────────── */
+
+.splitRoot {
+  display: flex;
+  flex-direction: column;
+}
+
+.splitSection {
+  display: flex;
+  min-height: 100vh;
+}
+
+.splitReverse {
+  flex-direction: row-reverse;
+}
+
+.splitImage {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+}
+
+.splitImage img {
+  width: 100%;
+  height: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+
+.textOnlySection {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-section-tinted);
+}
+
+.textOnlyInner {
+  max-width: 680px;
+  width: 100%;
+  padding: 5rem 1.5rem;
+}
+
+.textOnlyInner .richText h1,
+.textOnlyInner .richText h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+}
+
+.textOnlyInner .richText p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  opacity: 0.8;
+}
+
+.splitText {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  padding: 4rem 5rem;
+}
+
+.splitTextInner {
+  max-width: 480px;
+}
+
+.splitTextInner .richText h1,
+.splitTextInner .richText h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.splitTextInner .richText p {
+  opacity: 0.7;
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .splitSection,
+  .splitReverse {
+    flex-direction: column;
+  }
+
+  .splitImage {
+    flex: none;
+    height: 55vw;
+    min-height: 260px;
+  }
+
+  .splitText {
+    flex: none;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .splitTextInner {
+    max-width: 100%;
+  }
+
+  .splitTextInner .richText h1,
+  .splitTextInner .richText h2 {
+    font-size: 1.6rem;
+  }
+}
+
 /* ── Rich text ───────────────────────────────────────────── */
 
 .richText {

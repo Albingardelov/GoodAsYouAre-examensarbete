@@ -64,6 +64,89 @@ function AccordionRichText({ body, media }: { body: string; media?: SharedMediaB
   );
 }
 
+// ── Split layout ──────────────────────────────────────────
+
+type SplitPair = {
+  richText?: SharedRichTextBlock;
+  media?: SharedMediaBlock;
+};
+
+function groupSplitBlocks(blocks: PageBlock[]): SplitPair[] {
+  const pairs: SplitPair[] = [];
+  let i = 0;
+  while (i < blocks.length) {
+    const a = blocks[i];
+    const b = blocks[i + 1];
+    if (a.__component === 'shared.rich-text' && b?.__component === 'shared.media') {
+      pairs.push({ richText: a as SharedRichTextBlock, media: b as SharedMediaBlock });
+      i += 2;
+    } else if (a.__component === 'shared.media' && b?.__component === 'shared.rich-text') {
+      pairs.push({ media: a as SharedMediaBlock, richText: b as SharedRichTextBlock });
+      i += 2;
+    } else if (a.__component === 'shared.rich-text') {
+      pairs.push({ richText: a as SharedRichTextBlock });
+      i += 1;
+    } else if (a.__component === 'shared.media') {
+      pairs.push({ media: a as SharedMediaBlock });
+      i += 1;
+    } else {
+      i += 1;
+    }
+  }
+  return pairs;
+}
+
+function SplitSection({ pair, index }: { pair: SplitPair; index: number }) {
+  const { richText, media } = pair;
+
+  const mediaFile = media?.file ?? null;
+  const imageSrc =
+    mediaFile && typeof mediaFile.url === 'string'
+      ? toAbsoluteStrapiUrl(mediaFile.url)
+      : null;
+  const imageAlt =
+    (typeof mediaFile?.alternativeText === 'string' && mediaFile.alternativeText) || '';
+
+  const body = typeof richText?.body === 'string' ? richText.body : '';
+
+  // Ingen bild → centrerad textrubrik
+  if (!imageSrc) {
+    return (
+      <div className={styles.textOnlySection}>
+        <div className={styles.textOnlyInner}>
+          {richText && (
+            <div className={styles.richText}>
+              <ReactMarkdown>{body}</ReactMarkdown>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Alternerande sida: jämnt index → bild vänster, udda → bild höger
+  const imageOnLeft = index % 2 === 0;
+
+  return (
+    <div className={`${styles.splitSection} ${imageOnLeft ? '' : styles.splitReverse}`}>
+      <div className={styles.splitImage}>
+        <img src={imageSrc} alt={imageAlt} loading="lazy" />
+      </div>
+      <div className={styles.splitText}>
+        <div className={styles.splitTextInner}>
+          {richText && (
+            <div className={styles.richText}>
+              <ReactMarkdown>{body}</ReactMarkdown>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Accordion ─────────────────────────────────────────────
+
 type AccordionGroup = {
   richText: SharedRichTextBlock;
   media?: SharedMediaBlock;
@@ -90,7 +173,46 @@ function groupAccordionBlocks(blocks: PageBlock[]): AccordionGroup[] {
   return groups;
 }
 
-export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean }) {
+export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean; splitLayout?: boolean; textSections?: boolean }) {
+  if (props.textSections) {
+    const richBlocks = props.blocks.filter(
+      (b) => b.__component === 'shared.rich-text'
+    ) as SharedRichTextBlock[];
+    return (
+      <div className={styles.textSectionsRoot}>
+        {richBlocks.map((block, i) => (
+          <div
+            key={block.id}
+            className={`${styles.textSection} ${i % 2 === 1 ? styles.textSectionTinted : ''}`}
+          >
+            <div className={styles.textSectionInner}>
+              <div className={styles.richText}>
+                <ReactMarkdown>{typeof block.body === 'string' ? block.body : ''}</ReactMarkdown>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (props.splitLayout) {
+    const pairs = groupSplitBlocks(props.blocks);
+    let imageCount = 0;
+    const pairsWithIndex = pairs.map((pair) => {
+      const hasImage = pair.media?.file != null;
+      const splitIdx = hasImage ? imageCount++ : -1;
+      return { pair, splitIdx };
+    });
+    return (
+      <div className={styles.splitRoot}>
+        {pairsWithIndex.map(({ pair, splitIdx }, i) => (
+          <SplitSection key={pair.richText?.id ?? pair.media?.id ?? i} pair={pair} index={splitIdx} />
+        ))}
+      </div>
+    );
+  }
+
   if (props.accordion) {
     const groups = groupAccordionBlocks(props.blocks);
     return (

@@ -7,6 +7,7 @@ import styles from './Page.module.css';
 export function Page(props: { slug: string; titleFallback: string }) {
   const { locale } = useLocale();
   const page = usePage({ slug: props.slug, locale });
+  const splitLayout = props.slug === 'act' || props.slug === 'toxism-vs-narcissism';
 
   useEffect(() => {
     if (page.status !== 'success') return;
@@ -16,9 +17,11 @@ export function Page(props: { slug: string; titleFallback: string }) {
 
   return (
     <>
-      <div className={styles.pageHeader}>
-        <h1 className={styles.title}>{props.titleFallback}</h1>
-      </div>
+      {!splitLayout && (
+        <div className={styles.pageHeader}>
+          <h1 className={styles.title}>{props.titleFallback}</h1>
+        </div>
+      )}
 
       {page.status === 'loading' ? (
         <p className={styles.status} aria-live="polite">
@@ -39,7 +42,7 @@ export function Page(props: { slug: string; titleFallback: string }) {
       {page.status === 'success' && page.data.blocks?.length ? (
         <PageRenderer
           blocks={page.data.blocks}
-          accordion={props.slug === 'toxism-vs-narcissism'}
+          splitLayout={splitLayout}
         />
       ) : null}
 

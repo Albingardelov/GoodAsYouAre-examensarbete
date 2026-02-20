@@ -1,41 +1,74 @@
+/* ── Header bar ──────────────────────────────────────────── */
+
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   background: var(--color-header-bg);
   color: var(--color-header-text);
   border-bottom: 1px solid var(--color-header-border);
+  transition: background 0.6s ease, border-color 0.6s ease, color 0.6s ease;
+}
+
+.transparent {
+  background: transparent;
+  border-color: transparent;
+  color: #ffffff;
 }
 
 .inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0.875rem 1.25rem;
+  padding: 0 2rem;
+  height: var(--header-height);
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
+/* ── Brand (absolute center) ─────────────────────────────── */
+
 .brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: 0.02em;
   text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
 }
 
-/* ── Hamburger button (mobile only) ─────────────────────── */
+/* ── Menu button (left) ──────────────────────────────────── */
 
 .menuButton {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  margin-left: auto;
-  padding: 0.5rem;
+  align-items: center;
+  gap: 0.35rem;
   background: none;
-  border: none;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
   cursor: pointer;
   color: inherit;
-  border-radius: 8px;
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.menuDots {
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-top: -1px;
+}
+
+.menuButton:hover {
+  background: rgba(128, 128, 128, 0.1);
 }
 
 .menuButton:focus-visible {
@@ -43,178 +76,25 @@
   outline-offset: 2px;
 }
 
-.bar {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 2px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.menuOpen .bar:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-.menuOpen .bar:nth-child(2) {
-  opacity: 0;
-}
-.menuOpen .bar:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* ── Desktop nav (hidden on mobile) ─────────────────────── */
-
-.desktopNav {
-  display: none;
-}
-
-/* ── Mobile overlay (outside header DOM) ────────────────── */
-
-.mobileOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99;
-  display: flex;
-  flex-direction: column;
-  padding: 6rem 2rem 3rem;
-  gap: 0.25rem;
-  background: var(--color-header-bg);
-  color: var(--color-header-text);
-  visibility: hidden;
-  opacity: 0;
-  transform: translateX(100%);
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0.3s;
-}
-
-.overlayOpen {
-  visibility: visible;
-  opacity: 1;
-  transform: translateX(0);
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0s;
-}
-
-.mobileOverlay nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.mobileLangWrapper {
-  margin-top: auto;
-  padding-top: 2rem;
-}
-
-/* ── Links ───────────────────────────────────────────────── */
-
-.link {
-  position: relative;
-  padding: 0.35rem 0.5rem;
-  border-radius: 8px;
-  text-decoration: none !important;
-  font-size: 0.9rem;
-  opacity: 0.92;
-  transition: background 0.15s, opacity 0.15s;
-  display: inline-block; 
-}
-
-/* Den animerade underlinjen */
-.link::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;      
-  left: 0.5rem;     
-  right: 0.5rem;    
-  height: 2px;
-  background-color: #E599F7;
-  
-  
-  transform: scaleX(0);
-  transform-origin: right; 
-  transition: transform 0.3s ease-in-out;
-}
-
-.link:hover {
-  background: rgba(255, 255, 255, 0.06);
-  opacity: 1;
-}
-
-
-.link:hover::after {
-  transform-origin: left;
-  transform: scaleX(1);
-}
-
-.link:focus-visible {
-  outline: 3px solid rgba(199, 181, 154, 0.65);
-  outline-offset: 2px;
-  opacity: 1;
-}
-
-.mobileLink {
-  padding: 0.9rem 0.75rem;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: 500;
-  opacity: 0.85;
-  transition: background 0.15s, opacity 0.15s;
-}
-
-.mobileLink:hover {
-  background: rgba(0, 0, 0, 0.05);
-  opacity: 1;
-}
-
-.mobileLink:focus-visible {
-  outline: 3px solid var(--color-accent-focus);
-  outline-offset: 2px;
-  opacity: 1;
-}
-
-.active {
-  background: rgba(0, 0, 0, 0.07);
-  opacity: 1;
-}
-
-/* ── CTA-länk (Kontakt) ──────────────────────────────────── */
+/* ── CTA link (right) ────────────────────────────────────── */
 
 .ctaLink {
   background: var(--color-cta-bg);
   color: var(--color-cta-text) !important;
   border-radius: 20px;
-  padding: 0.45rem 1.1rem;
-  opacity: 1;
+  padding: 0.4rem 0.9rem;
+  text-decoration: none !important;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 500;
 }
 
 .ctaLink:hover {
-  background: var(--color-cta-bg);
   filter: brightness(0.95);
+  text-decoration: none !important;
 }
 
-.ctaLink.active {
-  background: var(--color-cta-bg);
-  outline: none;
-  filter: brightness(0.9);
-}
-
-/* ── Language button ─────────────────────────────────────── */
-
-.langButton {
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: var(--color-surface);
-  color: inherit;
-  padding: 0.45rem 0.75rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.9rem;
-}
-
-.langButton:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.langButton:focus-visible {
+.ctaLink:focus-visible {
   outline: 3px solid var(--color-accent-focus);
   outline-offset: 2px;
 }
@@ -237,22 +117,177 @@
   left: 0.75rem;
 }
 
-/* ── Desktop (≥ 768px) ───────────────────────────────────── */
+/* ── Backdrop ────────────────────────────────────────────── */
 
-@media (min-width: 768px) {
-  .menuButton {
-    display: none;
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+/* ── Overlay (slides from left) ──────────────────────────── */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--header-height) + 1rem) 3.5rem 3rem 2.5rem;
+  width: min(540px, 95vw);
+  background: #1e1a16;
+  color: #f0ebe3;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease,
+              visibility 0s linear 0.4s;
+}
+
+.overlayOpen {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease,
+              visibility 0s linear 0s;
+}
+
+
+/* ── Close button ────────────────────────────────────────── */
+
+.closeButton {
+  position: absolute;
+  top: calc(var(--header-height) / 2);
+  transform: translateY(-50%);
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 1px solid rgba(240, 235, 227, 0.35);
+  border-radius: 20px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  transition: background 0.15s;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.closeButton:focus-visible {
+  outline: 3px solid rgba(240, 235, 227, 0.5);
+  outline-offset: 4px;
+}
+
+/* ── Overlay nav ─────────────────────────────────────────── */
+
+.overlay nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.overlayLink {
+  display: flex;
+  align-items: baseline;
+  text-decoration: none !important;
+  color: inherit;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  padding: 0.3rem 0;
+  opacity: 0.9;
+  transition: opacity 0.15s;
+}
+
+.overlayLink::before {
+  content: '–';
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  margin-right: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: max-width 0.25s ease, opacity 0.2s ease, margin-right 0.25s ease;
+}
+
+.overlayLink:hover {
+  opacity: 0.65;
+}
+
+.overlayLink:hover::before {
+  max-width: 2rem;
+  opacity: 1;
+  margin-right: 0.6rem;
+}
+
+.overlayLinkActive {
+  opacity: 0.5;
+}
+
+.overlayLinkActive::before {
+  max-width: 2rem;
+  opacity: 0.5;
+  margin-right: 0.6rem;
+}
+
+.overlayLink:focus-visible {
+  outline: 2px solid rgba(240, 235, 227, 0.5);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Overlay footer ──────────────────────────────────────── */
+
+.overlayFooter {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.langButton {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 0;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+
+.langButton:hover {
+  opacity: 1;
+}
+
+.langButton:focus-visible {
+  outline: 3px solid rgba(240, 235, 227, 0.5);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transition: opacity 0.15s ease, visibility 0s linear 0.15s;
+    transform: none;
   }
-
-  .mobileOverlay {
-    display: none;
+  .overlayOpen {
+    transition: opacity 0.15s ease, visibility 0s linear 0s;
   }
-
-  .desktopNav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.25rem;
-    margin-left: auto;
+  .overlayLink::before {
+    transition: none;
   }
 }

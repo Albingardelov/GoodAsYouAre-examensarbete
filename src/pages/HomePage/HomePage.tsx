@@ -59,29 +59,16 @@ export function HomePage() {
 
   return (
     <div className={styles.root}>
-      <section className={styles.heroSection}>
+      <section
+        className={styles.heroSection}
+        style={imageSrc ? { backgroundImage: `url(${imageSrc})` } : undefined}
+      >
         <div className={styles.heroInner}>
-          <div className={styles.heroText}>
-            {heroTextBlock && (
-              <div className={styles.heroBody}>
-                <ReactMarkdown components={{ h1: ({ children }) => <h1>{children}</h1> }}>
-                  {heroTextBlock.body}
-                </ReactMarkdown>
-              </div>
-            )}
-          </div>
-
-          {imageSrc && (
-            <div className={styles.heroPhoto}>
-              <img
-                className={styles.heroImg}
-                src={imageSrc}
-                alt={imageAlt}
-                loading="eager"
-                fetchPriority="high"
-                width={heroMedia?.width ?? undefined}
-                height={heroMedia?.height ?? undefined}
-              />
+          {heroTextBlock && (
+            <div className={styles.heroBody}>
+              <ReactMarkdown components={{ h1: ({ children }) => <h1>{children}</h1> }}>
+                {heroTextBlock.body}
+              </ReactMarkdown>
             </div>
           )}
         </div>

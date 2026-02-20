@@ -34,6 +34,7 @@
   --color-header-bg: #ffffff;
   --color-header-text: #111111;
   --color-header-border: #efefef;
+  --header-height: 64px;
 
   /* ── CTA-knapp ───────────────────────────────────────────── */
   --color-cta-bg: #e8b4d8;

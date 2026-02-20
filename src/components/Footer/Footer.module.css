@@ -1,0 +1,29 @@
+.footer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0.75;
+}
+
+.copy {
+  font-size: 0.85rem;
+}
+
+.social {
+  display: flex;
+  gap: 1rem;
+}
+
+.icon {
+  color: var(--color-text);
+  transition: opacity 0.2s;
+}
+
+.icon:hover {
+  opacity: 0.5;
+  text-decoration: none;
+}
