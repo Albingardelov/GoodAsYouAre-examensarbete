@@ -54,8 +54,6 @@ export function HomePage() {
     heroMedia && typeof heroMedia.url === 'string'
       ? toAbsoluteStrapiUrl(heroMedia.url)
       : null;
-  const imageAlt =
-    (typeof heroMedia?.alternativeText === 'string' && heroMedia.alternativeText) || '';
 
   return (
     <div className={styles.root}>
