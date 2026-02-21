@@ -1,0 +1,29 @@
+export function WaveDivider({
+  topColor,
+  bottomColor,
+  flip = false,
+}: {
+  topColor: string;
+  bottomColor: string;
+  flip?: boolean;
+}) {
+  return (
+    <svg
+      viewBox="0 0 900 120"
+      preserveAspectRatio="none"
+      style={{
+        display: 'block',
+        width: '100%',
+        height: '80px',
+        transform: flip ? 'scaleY(-1)' : undefined,
+      }}
+      aria-hidden="true"
+    >
+      <rect x="0" y="0" width="900" height="120" fill={topColor} />
+      <path
+        d="M0 77L15 76.3C30 75.7 60 74.3 90 73C120 71.7 150 70.3 180 72.3C210 74.3 240 79.7 270 81.7C300 83.7 330 82.3 360 79.7C390 77 420 73 450 72.5C480 72 510 75 540 76.7C570 78.3 600 78.7 630 78.2C660 77.7 690 76.3 720 76.2C750 76 780 77 810 78.2C840 79.3 870 80.7 885 81.3L900 82L900 121L885 121C870 121 840 121 810 121C780 121 750 121 720 121C690 121 660 121 630 121C600 121 570 121 540 121C510 121 480 121 450 121C420 121 390 121 360 121C330 121 300 121 270 121C240 121 210 121 180 121C150 121 120 121 90 121C60 121 30 121 15 121L0 121Z"
+        fill={bottomColor}
+      />
+    </svg>
+  );
+}

@@ -1,7 +1,12 @@
+import { Fragment } from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { PageBlock, SectionTheme, SharedMediaBlock, SharedQuoteBlock, SharedRichTextBlock } from '../../types/strapi';
 import { toAbsoluteStrapiUrl } from '../../api/strapi';
+import { WaveDivider } from '../WaveDivider/WaveDivider';
 import styles from './PageRenderer.module.css';
+
+const BG_WHITE  = '#faf8f5';
+const BG_TINTED = '#f0ece5';
 
 const themeClass: Record<SectionTheme, string> = {
   default: styles.sectionDefault,
@@ -204,10 +209,20 @@ export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean; 
       const splitIdx = hasImage ? imageCount++ : -1;
       return { pair, splitIdx };
     });
+    const getBg = (pair: SplitPair) => pair.media?.file != null ? BG_WHITE : BG_TINTED;
+
     return (
       <div className={styles.splitRoot}>
         {pairsWithIndex.map(({ pair, splitIdx }, i) => (
-          <SplitSection key={pair.richText?.id ?? pair.media?.id ?? i} pair={pair} index={splitIdx} />
+          <Fragment key={pair.richText?.id ?? pair.media?.id ?? i}>
+            <SplitSection pair={pair} index={splitIdx} />
+            {i < pairsWithIndex.length - 1 && (
+              <WaveDivider
+                topColor={getBg(pair)}
+                bottomColor={getBg(pairsWithIndex[i + 1].pair)}
+              />
+            )}
+          </Fragment>
         ))}
       </div>
     );
