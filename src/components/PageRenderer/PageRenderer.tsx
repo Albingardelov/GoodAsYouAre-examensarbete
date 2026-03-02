@@ -116,8 +116,9 @@ function SplitSection({ pair, index }: { pair: SplitPair; index: number }) {
 
   // Ingen bild → centrerad textrubrik
   if (!imageSrc) {
+    const bgClass = themeClass[richText?.theme ?? 'tinted'];
     return (
-      <div className={styles.textOnlySection}>
+      <div className={`${styles.textOnlySection} ${bgClass}`}>
         <div className={styles.textOnlyInner}>
           {richText && (
             <div className={styles.richText}>
@@ -209,7 +210,12 @@ export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean; 
       const splitIdx = hasImage ? imageCount++ : -1;
       return { pair, splitIdx };
     });
-    const getBg = (pair: SplitPair) => pair.media?.file != null ? BG_WHITE : BG_TINTED;
+    const getBg = (pair: SplitPair): string => {
+      if (pair.media?.file != null) return BG_WHITE;
+      const theme = pair.richText?.theme;
+      if (theme === 'default') return BG_WHITE;
+      return BG_TINTED;
+    };
 
     return (
       <div className={styles.splitRoot}>
@@ -244,20 +250,40 @@ export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean; 
     );
   }
 
+  const getBlockBg = (block: PageBlock): string => {
+    if (block.__component === 'shared.rich-text') {
+      const theme = (block as SharedRichTextBlock).theme;
+      if (theme === 'tinted') return BG_TINTED;
+    }
+    if (block.__component === 'shared.quote') {
+      const theme = (block as SharedQuoteBlock).theme;
+      if (theme === 'tinted') return BG_TINTED;
+    }
+    return BG_WHITE;
+  };
+
   return (
     <div className={styles.root}>
-      {props.blocks.map((block) => {
+      {props.blocks.map((block, i) => {
+        const next = props.blocks[i + 1];
+        const currentBg = getBlockBg(block);
+        const nextBg = next ? getBlockBg(next) : null;
+        const showWave = nextBg !== null && nextBg !== currentBg;
+
         if (block.__component === 'shared.rich-text') {
           const b = block as SharedRichTextBlock;
           const body = typeof b.body === 'string' ? b.body : '';
           return (
-            <Section key={block.id} theme={b.theme}>
-              <div className={styles.richText}>
-                <ReactMarkdown components={{ h1: ({ children }) => <h2>{children}</h2> }}>
-                  {body}
-                </ReactMarkdown>
-              </div>
-            </Section>
+            <Fragment key={block.id}>
+              <Section theme={b.theme}>
+                <div className={styles.richText}>
+                  <ReactMarkdown components={{ h1: ({ children }) => <h2>{children}</h2> }}>
+                    {body}
+                  </ReactMarkdown>
+                </div>
+              </Section>
+              {showWave && <WaveDivider topColor={currentBg} bottomColor={nextBg!} />}
+            </Fragment>
           );
         }
 
@@ -266,12 +292,15 @@ export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean; 
           const title = typeof b.title === 'string' ? b.title : null;
           const body = typeof b.body === 'string' ? b.body : null;
           return (
-            <Section key={block.id} theme={b.theme}>
-              <blockquote className={styles.quote} aria-label={title ?? 'Citat'}>
-                {title ? <p className={styles.quoteTitle}>{title}</p> : null}
-                {body ? <p className={styles.quoteBody}>{body}</p> : null}
-              </blockquote>
-            </Section>
+            <Fragment key={block.id}>
+              <Section theme={b.theme}>
+                <blockquote className={styles.quote} aria-label={title ?? 'Citat'}>
+                  {title ? <p className={styles.quoteTitle}>{title}</p> : null}
+                  {body ? <p className={styles.quoteBody}>{body}</p> : null}
+                </blockquote>
+              </Section>
+              {showWave && <WaveDivider topColor={currentBg} bottomColor={nextBg!} />}
+            </Fragment>
           );
         }
 
@@ -288,19 +317,22 @@ export function PageRenderer(props: { blocks: PageBlock[]; accordion?: boolean; 
 
           if (media.mime?.startsWith('image/')) {
             return (
-              <Section key={block.id}>
-                <figure className={styles.media}>
-                  <img
-                    className={styles.mediaImg}
-                    src={src}
-                    alt={alt}
-                    loading="lazy"
-                    width={media.width ?? undefined}
-                    height={media.height ?? undefined}
-                  />
-                  {media.caption ? <figcaption>{media.caption}</figcaption> : null}
-                </figure>
-              </Section>
+              <Fragment key={block.id}>
+                <Section>
+                  <figure className={styles.media}>
+                    <img
+                      className={styles.mediaImg}
+                      src={src}
+                      alt={alt}
+                      loading="lazy"
+                      width={media.width ?? undefined}
+                      height={media.height ?? undefined}
+                    />
+                    {media.caption ? <figcaption>{media.caption}</figcaption> : null}
+                  </figure>
+                </Section>
+                {showWave && <WaveDivider topColor={currentBg} bottomColor={nextBg!} />}
+              </Fragment>
             );
           }
 

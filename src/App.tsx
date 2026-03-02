@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout/Layout';
 import type { Locale } from './context/LocaleContext';
@@ -17,6 +17,11 @@ const ROUTES: Array<{ path: string; slug: string; title: Record<Locale, string> 
 
 function App() {
   const { locale } = useLocale();
+
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>).updateCookieBannerLocale?.(locale);
+  }, [locale]);
+
   return (
     <Suspense fallback={null}>
       <Routes>

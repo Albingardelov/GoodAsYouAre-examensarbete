@@ -23,56 +23,83 @@
     <!-- Silktide Consent Manager -->
     <link rel="stylesheet" id="silktide-consent-manager-css" href="/cookiebanner/silktide-consent-manager.css">
     <style>
-      /* Minska Silktide cookie-ikonen */
-      #silktide-consent-manager-cookie-icon,
-      .silktide-consent-manager__cookie-icon {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        min-height: 36px !important;
+      /* Göm den flytande cookie-ikonen — hanteras via footer-knappen */
+      #silktide-cookie-icon {
+        display: none !important;
+      }
+      /* Göm Silktide-kreditlänken */
+      #silktide-modal footer a[href*="silktide.com"] {
+        display: none !important;
       }
     </style>
     <script src="/cookiebanner/silktide-consent-manager.js"></script>
     <script>
-      silktideCookieBannerManager.updateCookieBannerConfig({
-        background: {
-          showBackground: true
+      var COOKIE_BANNER_TEXT = {
+        sv: {
+          cookieTypeName: "Nödvändiga",
+          cookieTypeDesc: "<p>Dessa cookies är nödvändiga för att webbplatsen ska fungera korrekt och kan inte stängas av.</p>",
+          bannerDesc: "<p>Vi använder cookies för att förbättra din upplevelse och analysera vår trafik.</p>",
+          acceptAll: "Acceptera alla",
+          acceptAllLabel: "Acceptera alla cookies",
+          rejectNonEssential: "Avvisa icke-nödvändiga",
+          rejectNonEssentialLabel: "Avvisa icke-nödvändiga cookies",
+          preferences: "Inställningar",
+          preferencesLabel: "Öppna cookie-inställningar",
+          prefTitle: "Anpassa dina cookie-inställningar",
+          prefDesc: "<p>Vi respekterar din rätt till integritet. Du kan välja att inte tillåta vissa typer av cookies.</p>"
         },
-        cookieIcon: {
-          position: "bottomRight"
-        },
-        cookieTypes: [
-          {
+        en: {
+          cookieTypeName: "Necessary",
+          cookieTypeDesc: "<p>These cookies are necessary for the website to function and cannot be switched off.</p>",
+          bannerDesc: "<p>We use cookies to enhance your experience and analyze our traffic.</p>",
+          acceptAll: "Accept all",
+          acceptAllLabel: "Accept all cookies",
+          rejectNonEssential: "Reject non-essential",
+          rejectNonEssentialLabel: "Reject non-essential cookies",
+          preferences: "Preferences",
+          preferencesLabel: "Open cookie preferences",
+          prefTitle: "Customize your cookie preferences",
+          prefDesc: "<p>We respect your right to privacy. You can choose not to allow some types of cookies.</p>"
+        }
+      };
+
+      function buildCookieBannerConfig(locale) {
+        var t = COOKIE_BANNER_TEXT[locale] || COOKIE_BANNER_TEXT.sv;
+        return {
+          background: { showBackground: true },
+          cookieIcon: { position: "bottomRight" },
+          cookieTypes: [{
             id: "necessary",
-            name: "Necessary",
-            description: "<p>These cookies are necessary for the website to function properly and cannot be switched off. They help with things like logging in and setting your privacy preferences.</p>",
-            required: true,
-            onAccept: function() {
-              console.log('Add logic for the required Necessary here');
+            name: t.cookieTypeName,
+            description: t.cookieTypeDesc,
+            required: true
+          }],
+          text: {
+            banner: {
+              description: t.bannerDesc,
+              acceptAllButtonText: t.acceptAll,
+              acceptAllButtonAccessibleLabel: t.acceptAllLabel,
+              rejectNonEssentialButtonText: t.rejectNonEssential,
+              rejectNonEssentialButtonAccessibleLabel: t.rejectNonEssentialLabel,
+              preferencesButtonText: t.preferences,
+              preferencesButtonAccessibleLabel: t.preferencesLabel
+            },
+            preferences: {
+              title: t.prefTitle,
+              description: t.prefDesc,
+              creditLinkText: " ",
+              creditLinkAccessibleLabel: " "
             }
           },
-        ],
-        text: {
-          banner: {
-            description: "<p>We use cookies on our site to enhance your user experience, provide personalized content, and analyze our traffic. <a href=\"https://your-website.com/cookie-policy\" target=\"_blank\">Cookie Policy.</a></p>",
-            acceptAllButtonText: "Accept all",
-            acceptAllButtonAccessibleLabel: "Accept all cookies",
-            rejectNonEssentialButtonText: "Reject non-essential",
-            rejectNonEssentialButtonAccessibleLabel: "Reject non-essential",
-            preferencesButtonText: "Preferences",
-            preferencesButtonAccessibleLabel: "Toggle preferences"
-          },
-          preferences: {
-            title: "Customize your cookie preferences",
-            description: "<p>We respect your right to privacy. You can choose not to allow some types of cookies. Your cookie preferences will apply across our website.</p>",
-            creditLinkText: "",
-            creditLinkAccessibleLabel: ""
-          }
-        },
-        position: {
-          banner: "center"
-        }
-      });
+          position: { banner: "center" }
+        };
+      }
+
+      var initialLocale = window.localStorage.getItem("goodasyouare:locale") || "sv";
+      silktideCookieBannerManager.updateCookieBannerConfig(buildCookieBannerConfig(initialLocale));
+      window.updateCookieBannerLocale = function(locale) {
+        silktideCookieBannerManager.updateCookieBannerConfig(buildCookieBannerConfig(locale));
+      };
     </script>
   </head>
   <body>
