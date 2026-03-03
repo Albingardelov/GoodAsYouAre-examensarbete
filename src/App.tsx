@@ -6,13 +6,13 @@ import { useLocale } from './hooks/useLocale';
 
 const HomePage = lazy(() => import('./pages/HomePage/HomePage').then((m) => ({ default: m.HomePage })));
 const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage').then((m) => ({ default: m.AboutPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage/ContactPage').then((m) => ({ default: m.ContactPage })));
 const Page = lazy(() => import('./pages/Page/Page').then((m) => ({ default: m.Page })));
 
 const ROUTES: Array<{ path: string; slug: string; title: Record<Locale, string> }> = [
   { path: '/vad-ar-act', slug: 'act', title: { sv: 'Vad är ACT', en: 'What is ACT' } },
   { path: '/toxism-vs-narcissism', slug: 'toxism-vs-narcissism', title: { sv: 'Toxism vs Narcissism', en: 'Toxism vs Narcissism' } },
   { path: '/tjanster', slug: 'services', title: { sv: 'Tjänster', en: 'Services' } },
-  { path: '/kontakt', slug: 'contact', title: { sv: 'Kontakt', en: 'Contact' } },
 ];
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/om-mig" element={<AboutPage />} />
+          <Route path="/kontakt" element={<ContactPage />} />
           {ROUTES.map((r) => (
             <Route key={r.path} path={r.path} element={<Page slug={r.slug} titleFallback={r.title[locale]} />} />
           ))}

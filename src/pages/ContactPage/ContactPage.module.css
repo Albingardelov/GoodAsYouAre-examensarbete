@@ -1,0 +1,193 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* ── Hero ────────────────────────────────────────────── */
+
+.hero {
+  width: 100%;
+  padding: 5rem 1.5rem 2rem;
+  background: var(--color-section-tinted);
+}
+
+.heroInner {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.h1 {
+  margin: 0 0 0.75rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.75;
+}
+
+/* ── Form section ────────────────────────────────────── */
+
+.formSection {
+  flex: 1;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Form ────────────────────────────────────────────── */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  font-size: 0.97rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-focus);
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.submitBtn {
+  align-self: flex-start;
+  padding: 0.65rem 2rem;
+  background: var(--color-cta-bg);
+  color: var(--color-cta-text);
+  border: none;
+  border-radius: 20px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s;
+}
+
+.submitBtn:hover {
+  filter: brightness(0.93);
+}
+
+.submitBtn:active {
+  transform: scale(0.97);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.errorMsg {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #b91c1c;
+  background: rgba(185, 28, 28, 0.07);
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+}
+
+/* ── Success card ─────────────────────────────────────── */
+
+.successCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0;
+  gap: 0.75rem;
+}
+
+.successIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-accent-bg);
+  border: 1px solid var(--color-accent-border);
+  font-size: 1.4rem;
+  color: var(--color-accent);
+}
+
+.successH2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.successP {
+  margin: 0;
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+/* ── Mobile ──────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 3.5rem 1.25rem 3rem;
+  }
+
+  .h1 {
+    font-size: 2rem;
+  }
+
+  .card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .submitBtn {
+    align-self: stretch;
+    text-align: center;
+  }
+}
