@@ -19,7 +19,7 @@ function App() {
   const { locale } = useLocale();
 
   useEffect(() => {
-    (window as unknown as Record<string, unknown>).updateCookieBannerLocale?.(locale);
+    (window as unknown as { updateCookieBannerLocale?: (locale: string) => void }).updateCookieBannerLocale?.(locale);
   }, [locale]);
 
   return (

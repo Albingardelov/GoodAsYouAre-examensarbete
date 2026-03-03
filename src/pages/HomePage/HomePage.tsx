@@ -4,7 +4,6 @@ import { useLocale } from '../../hooks/useLocale';
 import { usePage } from '../../hooks/usePage';
 import { toAbsoluteStrapiUrl } from '../../api/strapi';
 import { PageRenderer } from '../../components/PageRenderer/PageRenderer';
-import { WaveDivider } from '../../components/WaveDivider/WaveDivider';
 import type { SharedMediaBlock, SharedRichTextBlock } from '../../types/strapi';
 import styles from './HomePage.module.css';
 
