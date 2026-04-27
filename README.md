@@ -1,73 +1,42 @@
-# React + TypeScript + Vite
+# Good As You Are
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**[Live Demo](https://good-as-you-are-examensarbete.vercel.app/)**
 
-Currently, two official plugins are available:
+A client website rebuilt from the ground up with an integrated headless CMS, allowing the client to manage and update content independently — without involving a developer.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## About the Project
 
-## React Compiler
+This is a freelance client project built as part of my thesis work. The goal was to replace an outdated website with a modern, performant frontend while giving the client full editorial control through a headless CMS. Content is fetched from Strapi and rendered dynamically, so the client can add, edit, and remove content through a user-friendly admin panel without touching any code.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- CMS-driven content via Strapi — all text and articles managed through a headless CMS
+- Contact form powered by EmailJS
+- Cookie consent banner
+- Fully responsive design
+- Keyboard navigation and accessibility improvements (Lighthouse-optimized)
+- Smooth wave SVG dividers between sections
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Category | Technology |
+|----------|------------|
+| Frontend | React 19, TypeScript |
+| Build tool | Vite |
+| CMS | Strapi (headless) |
+| Email | EmailJS |
+| Deployment | Vercel |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Architecture
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+Strapi CMS (admin panel)
+        ↓
+   REST API
+        ↓
+React frontend (TypeScript + Vite)
+        ↓
+   Vercel (hosting)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Content editors update pages through Strapi's admin UI. The React frontend fetches that content at runtime via Strapi's REST API and renders it using `react-markdown`, keeping the frontend completely decoupled from the content layer.
